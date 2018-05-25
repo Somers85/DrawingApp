@@ -1,33 +1,40 @@
-var da = document.getElementById('drawArea');
-var dax = da.getContext('2d');
+var blockSize  = '32px';
+var gridSize = 1024;
+var drawing  = false;
 
-var boxsize = 20;
-var _draw = false;
 
-dax.canvas.width = window.innerWidth;
-dax.canvas.height = window.innerHeight;
-
-document.getElementById('drawArea').addEventListener('mousedown',startDraw);
-document.getElementById('drawArea').addEventListener('tick',update);
-document.getElementById('drawArea').addEventListener('mouseup',stopDraw);
-
-function startDraw(event){
-    _draw = true;
+// draws grid
+function drawGrid(){    
+    for (var i = 0; i<gridSize; i++)
+    {
+        var newDiv = document.createElement('div');
+        newDiv.id = 'box'+i;
+        newDiv.style.backgroundColor = 'black';
+        newDiv.style.width = blockSize;
+        newDiv.style.height = blockSize;
+        newDiv.style.display = 'inline-block';
+        newDiv.style.opacity = '0';
+        newDiv.addEventListener('mousedown',mousedwn);
+        newDiv.addEventListener('mousemove',mousemove);
+        newDiv.addEventListener('mouseup',mouseup);
+        document.getElementById('container').appendChild(newDiv);
+    }
 }
 
-function update()
-{
-   if (_draw===true)
-   {
-        var mouseX = event.clientX;
-        var mouseY = event.clientY;
-        dax.beginPath();
-        dax.rect(mouseX,mouseY,boxsize,boxsize);
-        dax.fill();
-   } 
+// handles functionality
+function mousedwn(event){
+    drawing = true;
 }
 
-function stopDraw(event)
-{
-    _draw = false;
+function mouseup(event){
+    drawing = false;
 }
+
+function mousemove(event){
+    if(drawing)
+    {
+        event.target.style.opacity = '1';
+    }
+}
+
+drawGrid();

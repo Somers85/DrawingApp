@@ -1,4 +1,8 @@
-#drawArea
+#container
 {
-    border: 1px solid black;
+    display: flex;
+    flex-flow: row wrap;
+    width: 1024px;
+    height: 1024px;
+    border: 1px solid red;
 }
