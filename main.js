@@ -1,33 +1,80 @@
-var da = document.getElementById('drawArea');
-var dax = da.getContext('2d');
+var blockSize  = '16px';
+var gridSize = 2304;
+var drawing  = false;
+var useColor = false;
 
-var boxsize = 20;
-var _draw = false;
 
-dax.canvas.width = window.innerWidth;
-dax.canvas.height = window.innerHeight;
+drawGrid();
 
-document.getElementById('drawArea').addEventListener('mousedown',startDraw);
-document.getElementById('drawArea').addEventListener('tick',update);
-document.getElementById('drawArea').addEventListener('mouseup',stopDraw);
-
-function startDraw(event){
-    _draw = true;
+// draws grid
+function drawGrid(){
+    for (var i = 0; i<gridSize; i++)
+    {
+        var newDiv = document.createElement('div');
+        newDiv.id = 'box'+i;
+        newDiv.style.backgroundColor = 'white';
+        newDiv.style.width = blockSize;
+        newDiv.style.height = blockSize;
+        newDiv.style.display = 'inline-block';
+        newDiv.addEventListener('mousedown',mousedwn);
+        newDiv.addEventListener('mousemove',mousemove);
+        newDiv.addEventListener('mouseup',mouseup);
+        document.getElementById('container').appendChild(newDiv);
+    }
 }
 
-function update()
-{
-   if (_draw===true)
-   {
-        var mouseX = event.clientX;
-        var mouseY = event.clientY;
-        dax.beginPath();
-        dax.rect(mouseX,mouseY,boxsize,boxsize);
-        dax.fill();
-   } 
+// handles functionality
+function mousedwn(event){
+    drawing = true;
+    if(drawing&&!useColor)
+    {
+        event.target.style.backgroundColor = 'black';
+    }
+    else if (drawing&&useColor)
+    {
+        event.target.style.backgroundColor = "rgb(" +  Math.floor(Math.random() *255) + "," +  Math.floor(Math.random() *255) + "," +  Math.floor(Math.random() *255) + ")";
+    }
 }
 
-function stopDraw(event)
-{
-    _draw = false;
+function mouseup(event){
+    drawing = false;
 }
+
+function mousemove(event){
+    if(drawing&&!useColor)
+    {
+        event.target.style.backgroundColor = 'black';
+    }
+    else if (drawing&&useColor)
+    {
+        event.target.style.backgroundColor = "rgb(" +  Math.floor(Math.random() *255) + "," +  Math.floor(Math.random() *255) + "," +  Math.floor(Math.random() *255) + ")";
+    }
+}
+
+// adds additional functionality
+// resets grid
+document.getElementById('reset').addEventListener('mousedown',resetGrid);
+
+function resetGrid(event){
+    for (var i=0; i<gridSize; i++)
+    {
+        document.getElementById('box'+i).style.backgroundColor = 'white';
+    } 
+}
+
+document.getElementById('colors').addEventListener('mousedown',colors);
+
+function colors(event){
+    if(useColor===false)
+    {
+        useColor = true;
+        document.getElementById('colors').style.color = 'red';
+    }
+    else if(useColor===true)
+    {
+        useColor = false
+        document.getElementById('colors').style.color = 'black';
+    }
+    console.log(useColor);
+}
+

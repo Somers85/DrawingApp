@@ -1,4 +1,13 @@
-#drawArea
+#container
 {
-    border: 1px solid black;
+    width: 768px;
+    height: 768px;
+    margin: 0 auto;
+    background-color: white;
+    display: flex;
+    flex-flow: row wrap; 
+}
+body
+{
+    background-color: black;
 }
